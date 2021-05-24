@@ -19,11 +19,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var blueSlider: UISlider!
     @IBOutlet weak var alphaSlider: UISlider!
     
-    private var rColor:CGFloat = 0.5
-    private var gColor:CGFloat = 0.5
-    private var bColor:CGFloat = 0.5
-    private var alphaColor:CGFloat = 1
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,7 +33,7 @@ class ViewController: UIViewController {
         
         alphaSlider.value = 1
         
-        // я так понимаю, что я могла просто в storyboard указать значение label, какой вариант правильней?
+
         redValueLabel.text = String(format: "%.2f", redSlider.value)
         greenValueLabel.text = String(format: "%.2f", greenSlider.value)
         blueValueLabel.text = String(format: "%.2f", blueSlider.value)
@@ -46,30 +41,25 @@ class ViewController: UIViewController {
         
         colorView.layer.cornerRadius = 30
         
-        colorView.backgroundColor = UIColor(red: rColor, green: gColor, blue: bColor, alpha: alphaColor)
+        colorView.backgroundColor = UIColor(
+            red: CGFloat(redSlider.value),
+            green: CGFloat(greenSlider.value),
+            blue: CGFloat(blueSlider.value),
+            alpha: CGFloat(alphaSlider.value)
+        )
     }
 
     @IBAction func changedSliderValue(_ sender: UISlider) {
-        if  sender.accessibilityLabel == "red" {
-            redValueLabel.text = String(format: "%.2f", sender.value)
-            rColor = CGFloat(sender.value)
-        } else if  sender.accessibilityLabel == "green" {
-            greenValueLabel.text = String(format: "%.2f", sender.value)
-            gColor = CGFloat(sender.value)
-        } else if  sender.accessibilityLabel == "blue" {
-            blueValueLabel.text = String(format: "%.2f", sender.value)
-            bColor = CGFloat(sender.value)
-        } else if sender.accessibilityLabel == "alpha" {
-            alphaValueLabel.text = String(format: "%.2f", sender.value)
-            alphaColor = CGFloat(sender.value)
-        }
-        updateViewBackgroundColor()
+        colorView.backgroundColor = UIColor(
+            red: CGFloat(redSlider.value),
+            green: CGFloat(greenSlider.value),
+            blue: CGFloat(blueSlider.value),
+            alpha: CGFloat(alphaSlider.value)
+        )
+        
+        redValueLabel.text = String(format: "%.2f", redSlider.value)
+        greenValueLabel.text = String(format: "%.2f", greenSlider.value)
+        blueValueLabel.text = String(format: "%.2f", blueSlider.value)
+        alphaValueLabel.text = String(format: "%.2f", alphaSlider.value)
     }
-    
-    func updateViewBackgroundColor() {
-        colorView.backgroundColor = UIColor(red: rColor, green: gColor, blue: bColor, alpha: alphaColor)
-    }
-    
-    
 }
-
