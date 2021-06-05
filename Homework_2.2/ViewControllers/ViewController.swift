@@ -34,13 +34,26 @@ class ViewController: UIViewController {
         alphaSlider.value = 1
         
 
-        redValueLabel.text = String(format: "%.2f", redSlider.value)
-        greenValueLabel.text = String(format: "%.2f", greenSlider.value)
-        blueValueLabel.text = String(format: "%.2f", blueSlider.value)
-        alphaValueLabel.text = String(format: "%.2f", alphaSlider.value)
+        redValueLabel.text = string(from: redSlider)
+        greenValueLabel.text = string(from: greenSlider)
+        blueValueLabel.text = string(from: blueSlider)
+        alphaValueLabel.text = string(from: alphaSlider)
         
         colorView.layer.cornerRadius = 30
         
+        setColor()
+    }
+
+    @IBAction func changedSliderValue(_ sender: UISlider) {
+        setColor()
+        
+        redValueLabel.text = string(from: redSlider)
+        greenValueLabel.text = string(from: greenSlider)
+        blueValueLabel.text = string(from: blueSlider)
+        alphaValueLabel.text = string(from: alphaSlider)
+    }
+    
+    private func setColor() {
         colorView.backgroundColor = UIColor(
             red: CGFloat(redSlider.value),
             green: CGFloat(greenSlider.value),
@@ -48,18 +61,8 @@ class ViewController: UIViewController {
             alpha: CGFloat(alphaSlider.value)
         )
     }
-
-    @IBAction func changedSliderValue(_ sender: UISlider) {
-        colorView.backgroundColor = UIColor(
-            red: CGFloat(redSlider.value),
-            green: CGFloat(greenSlider.value),
-            blue: CGFloat(blueSlider.value),
-            alpha: CGFloat(alphaSlider.value)
-        )
         
-        redValueLabel.text = String(format: "%.2f", redSlider.value)
-        greenValueLabel.text = String(format: "%.2f", greenSlider.value)
-        blueValueLabel.text = String(format: "%.2f", blueSlider.value)
-        alphaValueLabel.text = String(format: "%.2f", alphaSlider.value)
+    private func string(from slider: UISlider) -> String {
+        String(format: "%.2f", slider.value)
     }
 }
