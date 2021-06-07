@@ -8,7 +8,7 @@
 import UIKit
 
 protocol SettingsViewControllerDelegate {
-    func update(rgbaColor: RGBAColor)
+    func update(_ color: UIColor)
 }
 
 class SettingsViewController: UIViewController {
@@ -23,9 +23,8 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var blueSlider: UISlider!
     @IBOutlet weak var alphaSlider: UISlider!
     
-    var rgbaColor: RGBAColor!
-    
-    var delegate: SettingsViewControllerDelegate?
+    var viewColor: UIColor!
+    var delegate: SettingsViewControllerDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,18 +40,13 @@ class SettingsViewController: UIViewController {
         
         alphaSlider.value = 1
         
+        colorView.backgroundColor = viewColor
+        setSlider()
         
-        if let rgbaColor = rgbaColor {
-            redSlider.value = rgbaColor.redColor
-            greenSlider.value = rgbaColor.greenColor
-            blueSlider.value = rgbaColor.blueColor
-            alphaSlider.value = rgbaColor.alphaColor
-            
-            redValueLabel.text = String(rgbaColor.redColor)
-            greenValueLabel.text = String(rgbaColor.greenColor)
-            blueValueLabel.text = String(rgbaColor.blueColor)
-            alphaValueLabel.text = String(rgbaColor.alphaColor)
-        }
+        redValueLabel.text = string(from: redSlider)
+        greenValueLabel.text = string(from: greenSlider)
+        blueValueLabel.text = string(from: blueSlider)
+        alphaValueLabel.text = string(from: alphaSlider)
         
         colorView.layer.cornerRadius = 30
         
@@ -63,17 +57,10 @@ class SettingsViewController: UIViewController {
         
         setColor()
         
-        rgbaColor = RGBAColor(
-            redColor: Float(string(from: redSlider)) ?? 0,
-            greenColor: Float(string(from: greenSlider)) ?? 0,
-            blueColor: Float(string(from: blueSlider)) ?? 0,
-            alphaColor: Float(string(from: alphaSlider)) ?? 0
-        )
-        
-        redValueLabel.text = String(rgbaColor.redColor)
-        greenValueLabel.text = String(rgbaColor.greenColor)
-        blueValueLabel.text = String(rgbaColor.blueColor)
-        alphaValueLabel.text = String(rgbaColor.alphaColor)
+        redValueLabel.text = string(from: redSlider)
+        greenValueLabel.text = string(from: greenSlider)
+        blueValueLabel.text = string(from: blueSlider)
+        alphaValueLabel.text = string(from: alphaSlider)
         
     }
     
@@ -86,12 +73,21 @@ class SettingsViewController: UIViewController {
         )
     }
     
+    private func setSlider() {
+        let ciColor = CIColor(color: viewColor)
+        
+        redSlider.value = Float(ciColor.red)
+        greenSlider.value = Float(ciColor.green)
+        blueSlider.value = Float(ciColor.blue)
+        alphaSlider.value = Float(ciColor.alpha)
+    }
+    
     private func string(from slider: UISlider) -> String {
         String(format: "%.2f", slider.value)
     }
     
     @IBAction func doneButtonPressed() {
-        delegate?.update(rgbaColor: rgbaColor)
+        delegate?.update(colorView.backgroundColor ?? .blue)
         dismiss(animated: true)
     }
 }
